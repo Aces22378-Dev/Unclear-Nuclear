@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unclear Nuclear — Discord Community</title>
+<meta name="description" content="Unclear Nuclear is a community for nuclear science, energy, technology, and history. Explore, discuss, and connect with fellow enthusiasts.">
+<meta property="og:title" content="Unclear Nuclear">
+<meta property="og:description" content="Unclear Nuclear is a community for nuclear science, energy, technology, and history. Explore, discuss, and connect with fellow enthusiasts.">
+<meta property="og:image" content="https://i.ibb.co/ZzY1Kd9g/UNCR-NBG.png">
+<meta name="theme-color" content="#d9ff3d">
+<link rel="icon" type="image/png" href="https://i.ibb.co/ZzY1Kd9g/UNCR-NBG.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil+Display:wght@600;800;900&family=JetBrains+Mono:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07090a;
+  --panel:#0d1210;
+  --line:#1d2a22;
+  --glow:#b6ff3b;      /* uranium-glass green */
+  --glow-dim:#5f8a1f;
+  --haz:#ffcc00;       /* hazard yellow */
+  --warn:#ff4d2e;
+  --text:#d7e4d2;
+  --muted:#7d8f80;
+  --stencil:'Big Shoulders Stencil Display', Impact, sans-serif;
+  --mono:'JetBrains Mono', ui-monospace, monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--mono);
+  line-height:1.6;
+  overflow-x:hidden;
+}
+/* CRT scanlines + vignette */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:100;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 1px,transparent 1px 3px);
+  mix-blend-mode:multiply;
+}
+body::after{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:99;
+  background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.65));
+}
+a{color:inherit}
+::selection{background:var(--glow);color:#000}
+
+/* hazard tape */
+.tape{
+  height:22px;
+  background:repeating-linear-gradient(-45deg,var(--haz) 0 18px,#111 18px 36px);
+  border-block:2px solid #000;
+}
+.tape.scroll{animation:tape 1.4s linear infinite;background-size:51px 22px}
+@keyframes tape{to{background-position:51px 0}}
+
+/* nav */
+nav{
+  position:sticky;top:0;z-index:50;
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  padding:.8rem clamp(1rem,4vw,3rem);
+  background:rgba(7,9,10,.88);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+.brand{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+.brand img{width:38px;height:38px;object-fit:contain;filter:drop-shadow(0 0 8px rgba(182,255,59,.5))}
+.brand span{font-family:var(--stencil);font-weight:900;font-size:1.5rem;letter-spacing:.06em;text-transform:uppercase}
+.brand span b{color:var(--glow);font-weight:900}
+nav ul{display:flex;gap:1.6rem;list-style:none;font-size:.78rem;text-transform:uppercase;letter-spacing:.15em}
+nav ul a{text-decoration:none;color:var(--muted);transition:color .2s}
+nav ul a:hover{color:var(--glow)}
+@media (max-width:720px){nav ul{display:none}}
+
+.btn{
+  display:inline-flex;align-items:center;gap:.6rem;
+  font-family:var(--stencil);font-weight:800;font-size:1.2rem;letter-spacing:.1em;text-transform:uppercase;
+  text-decoration:none;color:#000;background:var(--glow);
+  padding:.75rem 1.5rem;border:2px solid var(--glow);
+  clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);
+  box-shadow:0 0 24px rgba(182,255,59,.35);
+  transition:transform .15s, box-shadow .2s, background .2s;
+  cursor:pointer;
+}
+.btn:hover{transform:translateY(-2px);box-shadow:0 0 40px rgba(182,255,59,.6)}
+.btn.ghost{background:transparent;color:var(--glow)}
+.btn.small{font-size:.95rem;padding:.5rem 1rem}
+.btn svg{width:22px;height:22px}
+
+/* hero */
+.hero{
+  position:relative;min-height:88vh;
+  display:grid;place-items:center;text-align:center;
+  padding:5rem 1.5rem 4rem;overflow:hidden;
+}
+.hero-bg{position:absolute;inset:0;z-index:0}
+#particles{position:absolute;inset:0;width:100%;height:100%}
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(ellipse at center,#000 20%,transparent 70%);
+  opacity:.55;
+}
+.hero-inner{position:relative;z-index:2;max-width:900px}
+.core{
+  position:relative;width:min(260px,60vw);aspect-ratio:1;margin:0 auto 2rem;
+}
+.core .ring{
+  position:absolute;inset:0;border-radius:50%;
+  border:2px dashed var(--glow-dim);
+  animation:spin 30s linear infinite;
+}
+.core .ring.r2{inset:10%;border-style:solid;border-color:rgba(182,255,59,.25);animation-duration:18s;animation-direction:reverse}
+.core .ring.r3{inset:-8%;border:1px solid rgba(255,204,0,.2);animation-duration:60s}
+.core .trefoil{position:absolute;inset:16%;animation:spin 40s linear infinite;opacity:.18}
+.core img{
+  position:absolute;inset:18%;width:64%;height:64%;object-fit:contain;
+  filter:drop-shadow(0 0 30px rgba(182,255,59,.6));
+  animation:pulse 3.2s ease-in-out infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{50%{filter:drop-shadow(0 0 55px rgba(182,255,59,.95))}}
+
+.eyebrow{
+  display:inline-flex;align-items:center;gap:.6rem;
+  font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;color:var(--haz);
+  border:1px solid rgba(255,204,0,.4);padding:.35rem .9rem;margin-bottom:1.2rem;
+}
+.eyebrow i{width:8px;height:8px;border-radius:50%;background:var(--haz);animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+h1{
+  font-family:var(--stencil);font-weight:900;text-transform:uppercase;
+  font-size:clamp(3.4rem,11vw,8.5rem);line-height:.88;letter-spacing:.02em;
+}
+h1 .g{color:var(--glow);text-shadow:0 0 18px rgba(182,255,59,.55),0 0 60px rgba(182,255,59,.3)}
+.glitch{position:relative;display:inline-block}
+.glitch::after{
+  content:attr(data-text);position:absolute;left:3px;top:0;color:var(--warn);opacity:.55;
+  clip-path:inset(0 0 100% 0);animation:glitch 4s infinite steps(1);
+}
+@keyframes glitch{
+  0%,92%{clip-path:inset(0 0 100% 0)}
+  93%{clip-path:inset(20% 0 55% 0)}
+  95%{clip-path:inset(60% 0 15% 0)}
+  97%{clip-path:inset(40% 0 40% 0)}
+}
+.tagline{max-width:620px;margin:1.6rem auto 2.2rem;color:var(--muted);font-size:clamp(.92rem,1.6vw,1.05rem)}
+.cta{display:flex;flex-wrap:wrap;gap:1rem;justify-content:center}
+
+/* readout bar */
+.readout{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border-block:1px solid var(--line);background:var(--panel);
+}
+.readout div{padding:1.4rem 1rem;text-align:center;border-right:1px solid var(--line)}
+.readout div:last-child{border-right:0}
+.readout .v{font-family:var(--stencil);font-size:2.6rem;font-weight:900;color:var(--glow);line-height:1;text-shadow:0 0 14px rgba(182,255,59,.4)}
+.readout .k{font-size:.68rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);margin-top:.4rem}
+.readout .v.warn{color:var(--haz);text-shadow:0 0 14px rgba(255,204,0,.4)}
+@media (max-width:720px){.readout{grid-template-columns:repeat(2,1fr)}.readout div:nth-child(2){border-right:0}.readout div:nth-child(-n+2){border-bottom:1px solid var(--line)}}
+
+/* sections */
+section{padding:6rem clamp(1.2rem,5vw,4rem);max-width:1240px;margin:0 auto}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;margin-bottom:2.6rem;flex-wrap:wrap}
+.sec-head .num{font-size:.75rem;color:var(--haz);letter-spacing:.3em}
+h2{font-family:var(--stencil);font-weight:900;text-transform:uppercase;font-size:clamp(2.4rem,6vw,4rem);line-height:.95}
+h2 .g{color:var(--glow)}
+.sec-head p{color:var(--muted);max-width:420px;font-size:.9rem}
+
+/* topic cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.card{
+  position:relative;background:var(--panel);padding:2rem 1.6rem 2.2rem;overflow:hidden;
+  transition:background .25s;
+}
+.card:hover{background:#111a14}
+.card::before{
+  content:"";position:absolute;left:0;top:0;height:3px;width:0;background:var(--glow);
+  box-shadow:0 0 12px var(--glow);transition:width .35s;
+}
+.card:hover::before{width:100%}
+.card .ic{width:46px;height:46px;color:var(--glow);margin-bottom:1.2rem}
+.card .code{position:absolute;right:1.2rem;top:1.2rem;font-size:.68rem;color:var(--glow-dim);letter-spacing:.15em}
+.card h3{font-family:var(--stencil);font-weight:800;font-size:1.7rem;text-transform:uppercase;letter-spacing:.04em;margin-bottom:.5rem}
+.card p{color:var(--muted);font-size:.86rem}
+
+/* live panel */
+.live{display:grid;grid-template-columns:1fr 370px;gap:2rem;align-items:start}
+@media (max-width:900px){.live{grid-template-columns:1fr}}
+.terminal{border:1px solid var(--line);background:var(--panel)}
+.term-bar{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:.6rem 1rem;border-bottom:1px solid var(--line);
+  font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
+}
+.status{display:flex;align-items:center;gap:.5rem;color:var(--glow)}
+.status i{width:8px;height:8px;border-radius:50%;background:var(--glow);box-shadow:0 0 10px var(--glow);animation:blink 1.2s steps(2) infinite}
+.status.off{color:var(--warn)}.status.off i{background:var(--warn);box-shadow:0 0 10px var(--warn)}
+.term-body{padding:1.2rem}
+.geiger{display:flex;align-items:flex-end;gap:3px;height:60px;margin-bottom:1.2rem;border-bottom:1px dashed var(--line);padding-bottom:.5rem}
+.geiger span{flex:1;background:var(--glow);opacity:.75;min-height:2px;transition:height .25s}
+.members{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:.6rem;max-height:340px;overflow:auto;padding-right:.3rem}
+.members::-webkit-scrollbar{width:6px}.members::-webkit-scrollbar-thumb{background:var(--glow-dim)}
+.m{display:flex;align-items:center;gap:.6rem;padding:.45rem .6rem;border:1px solid var(--line);background:#0a0f0c;font-size:.8rem;min-width:0}
+.m img{width:28px;height:28px;border-radius:50%;flex-shrink:0}
+.m .n{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.m .act{display:block;font-size:.65rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.m .d{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-left:auto}
+.d.online{background:#3ba55d}.d.idle{background:#faa61a}.d.dnd{background:#ed4245}
+.channels{margin-top:1.2rem;display:flex;flex-wrap:wrap;gap:.5rem}
+.channels span{font-size:.75rem;color:var(--muted);border:1px solid var(--line);padding:.25rem .6rem}
+.channels span::before{content:"🔊 ";filter:grayscale(1)}
+.empty{color:var(--muted);font-size:.85rem;padding:1rem 0}
+.widget-frame{border:1px solid var(--line);padding:10px;background:var(--panel);position:relative}
+.widget-frame::before,.widget-frame::after{
+  content:"";position:absolute;width:18px;height:18px;border:2px solid var(--haz);
+}
+.widget-frame::before{top:-2px;left:-2px;border-right:0;border-bottom:0}
+.widget-frame::after{bottom:-2px;right:-2px;border-left:0;border-top:0}
+.widget-frame iframe{display:block;width:100%;max-width:350px;height:500px;margin:0 auto;border:0}
+
+/* join */
+.join{
+  position:relative;text-align:center;border:1px solid var(--line);background:
+  radial-gradient(ellipse at center,rgba(182,255,59,.09),transparent 65%),var(--panel);
+  padding:5rem 1.5rem;overflow:hidden;
+}
+.join .bigtref{position:absolute;width:520px;height:520px;left:50%;top:50%;transform:translate(-50%,-50%);opacity:.05;animation:spin 80s linear infinite}
+.join h2{position:relative;margin-bottom:1rem}
+.join p{position:relative;color:var(--muted);margin:0 auto 2rem;max-width:520px}
+.join .cta{position:relative}
+.copy-id{font-size:.75rem;color:var(--muted);margin-top:1.6rem;position:relative}
+.copy-id button{background:none;border:1px dashed var(--glow-dim);color:var(--glow);font-family:var(--mono);font-size:.75rem;padding:.2rem .5rem;cursor:pointer;margin-left:.4rem}
+
+/* ticker */
+.ticker{overflow:hidden;border-block:1px solid var(--line);background:#050706;white-space:nowrap}
+.ticker div{display:inline-block;padding:.7rem 0;animation:tick 40s linear infinite;font-size:.78rem;letter-spacing:.2em;color:var(--glow-dim);text-transform:uppercase}
+.ticker b{color:var(--haz);font-weight:600;margin:0 1.5rem}
+@keyframes tick{to{transform:translateX(-50%)}}
+
+footer{padding:2.5rem clamp(1.2rem,5vw,4rem);display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;font-size:.75rem;color:var(--muted);border-top:1px solid var(--line)}
+footer .brand img{width:28px;height:28px}
+footer .brand span{font-size:1.1rem}
+
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s, transform .7s}
+.reveal.in{opacity:1;transform:none}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="trefoil" viewBox="-50 -50 100 100">
+      <circle r="8" fill="currentColor"/>
+      <g fill="currentColor">
+        <path d="M0-14 L-24-41.6 A48 48 0 0 1 24-41.6 Z" transform="rotate(0)"/>
+        <path d="M0-14 L-24-41.6 A48 48 0 0 1 24-41.6 Z" transform="rotate(120)"/>
+        <path d="M0-14 L-24-41.6 A48 48 0 0 1 24-41.6 Z" transform="rotate(240)"/>
+      </g>
+    </symbol>
+    <symbol id="discord" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M20.32 4.37a19.8 19.8 0 0 0-4.89-1.52.07.07 0 0 0-.08.04c-.21.38-.44.87-.61 1.25a18.27 18.27 0 0 0-5.49 0 12.6 12.6 0 0 0-.62-1.25.08.08 0 0 0-.08-.04 19.74 19.74 0 0 0-4.89 1.52.07.07 0 0 0-.03.03C.53 9.05-.32 13.58.1 18.06a.08.08 0 0 0 .03.06 19.9 19.9 0 0 0 5.99 3.03.08.08 0 0 0 .08-.03c.46-.63.87-1.3 1.23-1.99a.08.08 0 0 0-.04-.11 13.1 13.1 0 0 1-1.87-.9.08.08 0 0 1 0-.13l.37-.29a.07.07 0 0 1 .08-.01c3.93 1.79 8.18 1.79 12.06 0a.07.07 0 0 1 .08.01l.37.29a.08.08 0 0 1 0 .13 12.3 12.3 0 0 1-1.87.89.08.08 0 0 0-.04.11c.36.7.78 1.36 1.23 1.99a.08.08 0 0 0 .08.03 19.84 19.84 0 0 0 6-3.03.08.08 0 0 0 .03-.05c.5-5.18-.84-9.67-3.55-13.66a.06.06 0 0 0-.03-.03zM8.02 15.33c-1.18 0-2.16-1.09-2.16-2.42 0-1.33.96-2.42 2.16-2.42 1.21 0 2.18 1.1 2.16 2.42 0 1.33-.96 2.42-2.16 2.42zm7.97 0c-1.18 0-2.15-1.09-2.15-2.42 0-1.33.95-2.42 2.15-2.42 1.21 0 2.18 1.1 2.16 2.42 0 1.33-.95 2.42-2.16 2.42z"/>
+    </symbol>
+  </defs>
+</svg>
+
+<nav>
+  <a class="brand" href="#top">
+    <img src="https://i.ibb.co/ZzY1Kd9g/UNCR-NBG.png" alt="Unclear Nuclear logo">
+    <span>Unclear <b>Nuclear</b></span>
+  </a>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#topics">Topics</a></li>
+    <li><a href="#live">Live Core</a></li>
+    <li><a href="#join">Join</a></li>
+  </ul>
+  <a class="btn small join-link" href="#join"><svg><use href="#discord"/></svg>Join</a>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-bg">
+    <div class="hero-grid"></div>
+    <canvas id="particles"></canvas>
+  </div>
+  <div class="hero-inner">
+    <div class="core">
+      <div class="ring r3"></div>
+      <div class="ring"></div>
+      <div class="ring r2"></div>
+      <svg class="trefoil" style="color:var(--haz)"><use href="#trefoil"/></svg>
+      <img src="https://i.ibb.co/ZzY1Kd9g/UNCR-NBG.png" alt="">
+    </div>
+    <div class="eyebrow"><i></i>Reactor online · Criticality achieved</div>
+    <h1><span class="glitch" data-text="Unclear">Unclear</span><br><span class="g">Nuclear</span></h1>
+    <p class="tagline">A community for nuclear science, energy, technology, and history. Explore, discuss, and connect with fellow enthusiasts.</p>
+    <div class="cta">
+      <a class="btn join-link" href="#join"><svg><use href="#discord"/></svg>Enter the Core</a>
+      <a class="btn ghost" href="#live">Live Readout</a>
+    </div>
+  </div>
+</header>
+
+<div class="tape scroll"></div>
+
+<div class="readout">
+  <div><div class="v" id="r-online">—</div><div class="k">Online Now</div></div>
+  <div><div class="v" id="r-voice">—</div><div class="k">Voice Channels</div></div>
+  <div><div class="v warn" id="r-cpm">—</div><div class="k">Counts / Min</div></div>
+  <div><div class="v" id="r-uptime">00:00</div><div class="k">Session Uptime</div></div>
+</div>
+
+<section id="about" class="reveal">
+  <div class="sec-head">
+    <div>
+      <div class="num">// 01 — Mission Briefing</div>
+      <h2>Clearing up <span class="g">nuclear</span></h2>
+    </div>
+    <p>Unclear Nuclear is a community for nuclear science, energy, technology, and history. Explore, discuss, and connect with fellow enthusiasts.</p>
+  </div>
+</section>
+
+<section id="topics" class="reveal" style="padding-top:0">
+  <div class="sec-head">
+    <div>
+      <div class="num">// 02 — Fuel Assemblies</div>
+      <h2>What we <span class="g">split</span></h2>
+    </div>
+    <p>Four core subjects. Bring questions, sources, and curiosity — every level of knowledge is welcome.</p>
+  </div>
+  <div class="cards">
+    <article class="card">
+      <span class="code">U-235</span>
+      <svg class="ic" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><circle cx="24" cy="24" r="4" fill="currentColor"/><ellipse cx="24" cy="24" rx="20" ry="8"/><ellipse cx="24" cy="24" rx="20" ry="8" transform="rotate(60 24 24)"/><ellipse cx="24" cy="24" rx="20" ry="8" transform="rotate(120 24 24)"/></svg>
+      <h3>Science</h3>
+      <p>Fission, fusion, decay chains, isotopes and the physics that makes it all tick.</p>
+    </article>
+    <article class="card">
+      <span class="code">PWR-01</span>
+      <svg class="ic" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 44 L14 14 Q24 20 34 14 L38 44 Z"/><path d="M14 14 Q24 8 34 14"/><path d="M20 4 q4 3 0 6 M28 2 q4 3 0 6"/><path d="M26 22 l-5 9 h6 l-5 9"/></svg>
+      <h3>Energy</h3>
+      <p>Reactors, power grids, SMRs, fuel cycles and the future of carbon-free power.</p>
+    </article>
+    <article class="card">
+      <span class="code">TECH-7</span>
+      <svg class="ic" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="12" width="36" height="26" rx="2"/><path d="M12 30 l5-10 5 6 5-12 5 8 4-4"/><path d="M16 42 h16"/></svg>
+      <h3>Technology</h3>
+      <p>Detectors, Geiger counters, medical isotopes, propulsion and engineering deep-dives.</p>
+    </article>
+    <article class="card">
+      <span class="code">1942</span>
+      <svg class="ic" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 8 h26 l6 6 v26 H8 Z"/><path d="M34 8 v6 h6"/><path d="M14 20 h20 M14 27 h20 M14 34 h12"/></svg>
+      <h3>History</h3>
+      <p>From Chicago Pile-1 to modern plants — the people, breakthroughs and incidents.</p>
+    </article>
+  </div>
+</section>
+
+<div class="ticker" aria-hidden="true">
+  <div id="ticker-text"></div>
+</div>
+
+<section id="live" class="reveal">
+  <div class="sec-head">
+    <div>
+      <div class="num">// 03 — Control Room</div>
+      <h2>Live <span class="g">core</span> readout</h2>
+    </div>
+    <p>Real-time telemetry pulled straight from the Discord server widget.</p>
+  </div>
+  <div class="live">
+    <div class="terminal">
+      <div class="term-bar">
+        <span id="srv-name">UNCLEAR NUCLEAR // MONITOR</span>
+        <span class="status" id="status"><i></i><span>Connecting…</span></span>
+      </div>
+      <div class="term-body">
+        <div class="geiger" id="geiger"></div>
+        <div class="members" id="members"><div class="empty">Scanning for signals…</div></div>
+        <div class="channels" id="channels"></div>
+      </div>
+    </div>
+    <div class="widget-frame">
+      <iframe src="https://discord.com/widget?id=1569201812547043452&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts" title="Unclear Nuclear Discord widget"></iframe>
+    </div>
+  </div>
+</section>
+
+<div class="tape"></div>
+
+<section id="join" class="reveal">
+  <div class="join">
+    <svg class="bigtref" style="color:var(--glow)"><use href="#trefoil"/></svg>
+    <h2>Ready to go <span class="g">critical?</span></h2>
+    <p>Join the chain reaction. One invite is all it takes to start a conversation that keeps on splitting.</p>
+    <div class="cta">
+      <a class="btn join-link" href="#" target="_blank" rel="noopener"><svg><use href="#discord"/></svg>Join the Discord</a>
+    </div>
+    <div class="copy-id">Server ID: 1569201812547043452<button id="copy-btn" type="button">Copy</button></div>
+  </div>
+</section>
+
+<footer>
+  <a class="brand" href="#top">
+    <img src="https://i.ibb.co/ZzY1Kd9g/UNCR-NBG.png" alt="">
+    <span>Unclear <b>Nuclear</b></span>
+  </a>
+  <span>☢ Not affiliated with Discord Inc. · © <span id="yr"></span> Unclear Nuclear</span>
+</footer>
+
+<script>
+const GUILD_ID = '1569201812547043452';
+const API = `https://discord.com/api/guilds/${GUILD_ID}/widget.json`;
+const $ = id => document.getElementById(id);
+$('yr').textContent = new Date().getFullYear();
+
+/* ---------- Discord widget.json ---------- */
+function setInvite(url){
+  document.querySelectorAll('.join-link').forEach(a=>{
+    a.href = url; a.target = '_blank'; a.rel = 'noopener';
+  });
+}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+
+async function loadWidget(){
+  const st = $('status');
+  try{
+    const res = await fetch(API,{cache:'no-store'});
+    if(!res.ok) throw new Error(res.status);
+    const d = await res.json();
+    st.className='status'; st.lastElementChild.textContent='Stable';
+    if(d.name) $('srv-name').textContent = `${d.name.toUpperCase()} // MONITOR`;
+    if(d.instant_invite) setInvite(d.instant_invite);
+    animateNum($('r-online'), d.presence_count ?? (d.members||[]).length);
+    animateNum($('r-voice'), (d.channels||[]).length);
+    baseRate = Math.max(1,(d.presence_count||1));
+
+    const mem = d.members||[];
+    $('members').innerHTML = mem.length ? mem.map(m=>`
+      <div class="m" title="${esc(m.username)}">
+        <img src="${esc(m.avatar_url)}" alt="" loading="lazy">
+        <div style="min-width:0">
+          <span class="n">${esc(m.username)}</span>
+          ${m.game?.name?`<span class="act">▶ ${esc(m.game.name)}</span>`:''}
+        </div>
+        <span class="d ${esc(m.status)}"></span>
+      </div>`).join('') : '<div class="empty">No visible members online right now.</div>';
+
+    const ch = d.channels||[];
+    $('channels').innerHTML = ch.map(c=>`<span>${esc(c.name)}</span>`).join('');
+  }catch(e){
+    st.className='status off'; st.lastElementChild.textContent='Signal lost';
+    $('members').innerHTML = '<div class="empty">Couldn\'t reach the widget API. Make sure "Enable Server Widget" is on in Server Settings → Widget.</div>';
+  }
+}
+function animateNum(el,to){
+  const start=performance.now(),dur=1200;
+  (function f(t){const p=Math.min(1,(t-start)/dur);el.textContent=Math.round(to*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(f)})(start);
+}
+loadWidget();
+setInterval(loadWidget, 60000);
+
+/* ---------- Geiger counter ---------- */
+let baseRate = 6;
+const g = $('geiger'), bars = [];
+for(let i=0;i<48;i++){const s=document.createElement('span');g.appendChild(s);bars.push(s)}
+let counts=[];
+setInterval(()=>{
+  const v = Math.random()*Math.min(100,20+baseRate*4)*(Math.random()<.08?2.2:1);
+  bars.push(bars.shift()); g.appendChild(bars[bars.length-1]);
+  bars[bars.length-1].style.height = Math.min(100,v)+'%';
+  counts.push(Math.round(v/8)); if(counts.length>60) counts.shift();
+},250);
+setInterval(()=>{ $('r-cpm').textContent = counts.reduce((a,b)=>a+b,0)*4 },1000);
+
+/* ---------- uptime ---------- */
+const t0=Date.now();
+setInterval(()=>{const s=Math.floor((Date.now()-t0)/1000);$('r-uptime').textContent=`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`},1000);
+
+/* ---------- ticker ---------- */
+const facts=['Half-life of U-235: 704 million years','Chicago Pile-1 went critical: Dec 2, 1942','1 kg of U-235 ≈ 24 GWh of heat','Cherenkov glow: electrons faster than light in water','Fusion powers every star you can see','Tc-99m: the most-used medical isotope','Banana dose: ~0.1 µSv'];
+const tk=facts.map(f=>`<b>☢</b>${f}`).join('');
+$('ticker-text').innerHTML = tk+tk;
+
+/* ---------- copy ---------- */
+$('copy-btn').addEventListener('click',async e=>{
+  try{await navigator.clipboard.writeText(GUILD_ID);e.target.textContent='Copied'}catch{e.target.textContent='Failed'}
+  setTimeout(()=>e.target.textContent='Copy',1500);
+});
+
+/* ---------- reveal ---------- */
+const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* ---------- particles (decay sparks) ---------- */
+const cv=$('particles'),cx=cv.getContext('2d');let W,H,P=[];
+function rs(){W=cv.width=cv.offsetWidth*devicePixelRatio;H=cv.height=cv.offsetHeight*devicePixelRatio}
+addEventListener('resize',rs);rs();
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function spawn(){
+  const a=Math.random()*Math.PI*2,sp=(.4+Math.random()*1.6)*devicePixelRatio;
+  P.push({x:W/2,y:H*.36,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,l:1,c:Math.random()<.2?'255,204,0':'182,255,59'});
+}
+(function loop(){
+  if(!reduce){
+    cx.clearRect(0,0,W,H);
+    if(P.length<140)for(let i=0;i<2;i++)spawn();
+    P=P.filter(p=>p.l>0);
+    for(const p of P){
+      p.x+=p.vx;p.y+=p.vy;p.l-=.006;
+      cx.fillStyle=`rgba(${p.c},${p.l*.8})`;
+      cx.fillRect(p.x,p.y,2*devicePixelRatio,2*devicePixelRatio);
+    }
+  }
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
