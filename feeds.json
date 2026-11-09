@@ -1,0 +1,18 @@
+[
+  {
+    "name": "World Nuclear News",
+    "url": "https://world-nuclear-news.org/rss"
+  },
+  {
+    "name": "IAEA Top News",
+    "url": "https://www.iaea.org/feeds/topnews"
+  },
+  {
+    "name": "ANS Newswire",
+    "url": "https://www.ans.org/news/feed/"
+  },
+  {
+    "name": "IAEA Publications",
+    "url": "https://www.iaea.org/feeds/publications"
+  }
+]
