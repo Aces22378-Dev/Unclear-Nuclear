@@ -420,6 +420,7 @@ footer .brand span{font-size:1.1rem}
 <script>
 const GUILD_ID = '1569201812547043452';
 const API = `https://discord.com/api/guilds/${GUILD_ID}/widget.json`;
+const INVITE = 'https://discord.gg/krhQTraDbV';
 const $ = id => document.getElementById(id);
 $('yr').textContent = new Date().getFullYear();
 
@@ -439,7 +440,6 @@ async function loadWidget(){
     const d = await res.json();
     st.className='status'; st.lastElementChild.textContent='Stable';
     if(d.name) $('srv-name').textContent = `${d.name.toUpperCase()} // MONITOR`;
-    if(d.instant_invite) setInvite(d.instant_invite);
     animateNum($('r-online'), d.presence_count ?? (d.members||[]).length);
     animateNum($('r-voice'), (d.channels||[]).length);
     baseRate = Math.max(1,(d.presence_count||1));
@@ -466,6 +466,7 @@ function animateNum(el,to){
   const start=performance.now(),dur=1200;
   (function f(t){const p=Math.min(1,(t-start)/dur);el.textContent=Math.round(to*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(f)})(start);
 }
+setInvite(INVITE);
 loadWidget();
 setInterval(loadWidget, 60000);
 
