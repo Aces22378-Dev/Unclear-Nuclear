@@ -28,7 +28,7 @@ jobs:
 
       - name: Post today's fact
         env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DAILY_FACT_WEBHOOK_URL }}
+          DISCORD_WEBHOOK_URL2: ${{ secrets.DISCORD_WEBHOOK_URL2 }}
           DAILY_FACT_ROLE_ID: ${{ secrets.DAILY_FACT_ROLE_ID }}
         run: python main.py
 
