@@ -1,0 +1,43 @@
+name: Daily nuclear quiz
+
+on:
+  schedule:
+    - cron: "0 18 * * *"   # 18:00 UTC = 1 PM Eastern (2 PM during daylight time)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  post-quiz:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: "Daily Nuclear Quiz"
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Post today's quiz
+        env:
+          DISCORD_WEBHOOK_URL3: ${{ secrets.DISCORD_WEBHOOK_URL3 }}
+          DAILY_QUIZ_ROLE_ID: ${{ secrets.DAILY_QUIZ_ROLE_ID }}
+        run: python main.py
+
+      - name: Save posted-quiz history
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A .
+          git diff --cached --quiet && exit 0
+          git commit -m "Update daily quiz history"
+          git pull --rebase
+          git push
