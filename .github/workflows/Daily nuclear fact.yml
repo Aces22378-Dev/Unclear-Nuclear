@@ -1,0 +1,43 @@
+name: Daily nuclear fact
+
+on:
+  schedule:
+    - cron: "0 14 * * *"   # 14:00 UTC = 9 AM Eastern (10 AM during daylight time)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  post-fact:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: "Daily Nuclear Fact"
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Post today's fact
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DAILY_FACT_WEBHOOK_URL }}
+          DAILY_FACT_ROLE_ID: ${{ secrets.DAILY_FACT_ROLE_ID }}
+        run: python main.py
+
+      - name: Save posted-fact history
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A .
+          git diff --cached --quiet && exit 0
+          git commit -m "Update daily fact history"
+          git pull --rebase
+          git push
